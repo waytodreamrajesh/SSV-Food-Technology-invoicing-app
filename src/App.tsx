@@ -20,12 +20,20 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row relative">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside 
-        className={`hidden md:flex bg-white border-r border-slate-200 transition-all duration-300 flex-col ${
-          isSidebarOpen ? 'w-64' : 'w-20'
-        }`}
+        className={`fixed md:static top-0 left-0 h-screen bg-white border-r border-slate-200 transition-all duration-300 flex flex-col z-40 ${
+          isSidebarOpen ? 'w-64' : 'w-64 -translate-x-full md:translate-x-0 md:w-64'
+        } hidden md:flex md:relative md:translate-x-0`}
       >
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen && <span className="font-bold text-xl text-indigo-600 tracking-tight">Invoicer</span>}
@@ -70,18 +78,26 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-grow p-4 md:p-8 overflow-y-auto min-h-screen">
-        <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">
-              {navItems.find(i => i.id === activeTab)?.label}
-            </h1>
-            <p className="text-slate-500 mt-1">Manage your business operations efficiently.</p>
+      <main className="flex-grow p-4 md:p-8 overflow-y-auto min-h-screen w-full">
+        <header className="mb-8 flex flex-row justify-between items-start md:items-center gap-4">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 md:hidden"
+            >
+              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+                {navItems.find(i => i.id === activeTab)?.label}
+              </h1>
+              <p className="text-slate-500 mt-1 text-sm">Manage your business operations efficiently.</p>
+            </div>
           </div>
-          <div className="flex gap-4 w-full md:w-auto">
-            <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2 text-sm text-slate-600">
+          <div className="flex gap-2 md:gap-4">
+            <div className="bg-white px-2 md:px-4 py-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2 text-xs md:text-sm text-slate-600 whitespace-nowrap">
               <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-              System Online
+              <span className="hidden sm:inline">System Online</span>
             </div>
           </div>
         </header>
