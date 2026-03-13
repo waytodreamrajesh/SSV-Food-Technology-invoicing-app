@@ -1,0 +1,5 @@
+{
+  "name": "Invoice & Quotation Builder",
+  "description": "A professional tool for small businesses to manage products, customers, and generate PDF invoices with real-time preview.",
+  "requestFramePermissions": []
+}
