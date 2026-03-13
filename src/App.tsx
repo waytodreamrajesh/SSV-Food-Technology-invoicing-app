@@ -20,10 +20,10 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       {/* Sidebar */}
       <aside 
-        className={`bg-white border-r border-slate-200 transition-all duration-300 flex flex-col ${
+        className={`hidden md:flex bg-white border-r border-slate-200 transition-all duration-300 flex-col ${
           isSidebarOpen ? 'w-64' : 'w-20'
         }`}
       >
@@ -70,15 +70,15 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-grow p-8 overflow-y-auto h-screen">
-        <header className="mb-8 flex justify-between items-center">
+      <main className="flex-grow p-4 md:p-8 overflow-y-auto min-h-screen">
+        <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">
               {navItems.find(i => i.id === activeTab)?.label}
             </h1>
             <p className="text-slate-500 mt-1">Manage your business operations efficiently.</p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 w-full md:w-auto">
             <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2 text-sm text-slate-600">
               <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
               System Online
