@@ -21,7 +21,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
-      {/* Mobile Overlay - Only show when sidebar is open on mobile */}
+      {/* Mobile Overlay - Only when sidebar is open */}
       {isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
@@ -29,22 +29,57 @@ export default function App() {
         />
       )}
 
-      {/* Sidebar */}
-      <aside 
-        className={`${
-          isSidebarOpen 
-            ? 'fixed top-0 left-0 w-64 z-40' 
-            : 'hidden md:flex'
-        } md:static md:block md:w-64 h-screen bg-white border-r border-slate-200 transition-all duration-300 flex flex-col`}
-      >
+      {/* Mobile Sidebar - Conditionally rendered only when open on mobile */}
+      {isSidebarOpen && (
+        <aside className="fixed top-0 left-0 w-64 h-screen bg-white border-r border-slate-200 z-40 flex flex-col overflow-y-auto">
+          <div className="p-6 flex items-center justify-between">
+            <span className="font-bold text-xl text-indigo-600 tracking-tight">Invoicer</span>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              className="p-2 hover:bg-slate-100 rounded-lg text-slate-500"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <nav className="flex-grow px-4 space-y-2 mt-4">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id as Tab);
+                  setIsSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-4 p-3 rounded-xl transition-all ${
+                  activeTab === item.id 
+                    ? 'bg-indigo-50 text-indigo-600 font-medium' 
+                    : 'text-slate-500 hover:bg-slate-50'
+                }`}
+              >
+                <item.icon size={22} />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="p-6 border-t border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                JD
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">John Doe</p>
+                <p className="text-xs text-slate-500">Admin</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      )}
+
+      {/* Desktop Sidebar - Always visible on desktop, never on mobile */}
+      <aside className="hidden md:flex w-64 h-screen bg-white border-r border-slate-200 flex-col overflow-y-auto">
         <div className="p-6 flex items-center justify-between">
-          {isSidebarOpen && <span className="font-bold text-xl text-indigo-600 tracking-tight">Invoicer</span>}
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 hover:bg-slate-100 rounded-lg text-slate-500"
-          >
-            {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <span className="font-bold text-xl text-indigo-600 tracking-tight">Invoicer</span>
         </div>
 
         <nav className="flex-grow px-4 space-y-2 mt-4">
@@ -59,37 +94,35 @@ export default function App() {
               }`}
             >
               <item.icon size={22} />
-              {isSidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </button>
           ))}
         </nav>
 
         <div className="p-6 border-t border-slate-100">
-          <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center'}`}>
+          <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
               JD
             </div>
-            {isSidebarOpen && (
-              <div>
-                <p className="text-sm font-semibold text-slate-800">John Doe</p>
-                <p className="text-xs text-slate-500">Admin</p>
-              </div>
-            )}
+            <div>
+              <p className="text-sm font-semibold text-slate-800">John Doe</p>
+              <p className="text-xs text-slate-500">Admin</p>
+            </div>
           </div>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-grow p-4 md:p-8 overflow-y-auto min-h-screen w-full">
+      <main className="flex-grow p-4 md:p-8 overflow-y-auto w-full">
         <header className="mb-8 flex flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-1">
             <button 
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              onClick={() => setIsSidebarOpen(true)}
               className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 md:hidden"
             >
-              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+              <Menu size={24} />
             </button>
-            <div>
+            <div className="flex-1">
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
                 {navItems.find(i => i.id === activeTab)?.label}
               </h1>
