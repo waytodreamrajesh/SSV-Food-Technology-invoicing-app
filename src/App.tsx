@@ -10,7 +10,7 @@ type Tab = 'invoices' | 'products' | 'customers';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('invoices');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'invoices', label: 'Invoice Builder', icon: FileText },
@@ -20,8 +20,8 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row relative">
-      {/* Mobile Overlay */}
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+      {/* Mobile Overlay - Only show when sidebar is open on mobile */}
       {isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
@@ -31,9 +31,11 @@ export default function App() {
 
       {/* Sidebar */}
       <aside 
-        className={`fixed md:static top-0 left-0 h-screen bg-white border-r border-slate-200 transition-all duration-300 flex flex-col z-40 ${
-          isSidebarOpen ? 'w-64' : 'w-64 -translate-x-full md:translate-x-0 md:w-64'
-        } hidden md:flex md:relative md:translate-x-0`}
+        className={`${
+          isSidebarOpen 
+            ? 'fixed top-0 left-0 w-64 z-40' 
+            : 'hidden md:flex'
+        } md:static md:block md:w-64 h-screen bg-white border-r border-slate-200 transition-all duration-300 flex flex-col`}
       >
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen && <span className="font-bold text-xl text-indigo-600 tracking-tight">Invoicer</span>}
